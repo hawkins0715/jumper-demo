@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title></title>
+    <meta charset="utf-8">
+</head>
+<body>
+
+<script src="build/three.js"></script>
+<script src="js/custom/cyliner.js"></script>
+<script src="js/custom/desk.js"></script>
+<script src="js/custom/cube.js"></script>
+<script src="js/custom/player.js"></script>
+<script src="js/custom/params.js"></script>
+<script src="js/stats.min.js"></script>
+<script src="js/controls/OrbitControls.js"></script>
+
+<script>
+    var stats;
+    var camera, scene, renderer;
+    var controls;
+
+
+    init();
+    animate();
+
+    function init() {
+
+        scene = new THREE.Scene();
+        scene.background = new THREE.Color( 0x8797a4 );
+
+        renderer = new THREE.WebGLRenderer({ antialias: true } ); //抗鋸齒
+        renderer.setSize( window.innerWidth, window.innerHeight );
+        document.body.appendChild( renderer.domElement );
+
+        camera = new THREE.OrthographicCamera( window.innerWidth / - 2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / - 2, -1000, 2000 );
+        camera.position.set( 200 , 180 , 200 );
+        camera.lookAt(new THREE.Vector3(0,0,0));
+
+        light = new THREE.AmbientLight( 0xFFFFFF,0.4 );
+        scene.add( light );
+
+  //       var axesHelper = new THREE.AxesHelper( 5 );
+		// scene.add( axesHelper );
+
+        light2 = new THREE.DirectionalLight(0xFFFFFF,1);
+        light2.position.set(3,4,2);
+        scene.add(light2);
+
+        ground = creatGround(0,0,0xe1e3b6)
+        cube = creatcube(0,0);
+        cube1 = creatcylinder(-200,-200);
+        cube2 = creatdesk(-400,-400);
+        player = creatcubeplayer(0,0);
+
+// Frame Stats
+		stats = new Stats();
+		stats.showPanel( 1 ); // 0: fps, 1: ms, 2: mb, 3+: custom
+		stats.domElement.style.position = 'absolute';
+        stats.domElement.style.left = 'auto';
+        stats.domElement.style.top = '8px';
+        stats.domElement.style.width = '90px';
+		document.body.appendChild( stats.domElement );
+// ****************
+
+//Controller
+		// controls = new THREE.OrbitControls( camera, renderer.domElement );
+		// controls.enableDamping = true; 
+		// controls.dampingFactor = 0.25;
+		// controls.screenSpacePanning = false;
+		// controls.minDistance = 100;
+		// controls.maxDistance = 500;
+		// controls.maxPolarAngle = Math.PI / 2;
+// ************
+
+        window.addEventListener( 'resize', onWindowResize, false );
+	}
+	
+	function creatGround(x,z,color){
+        var geometry = new THREE.PlaneGeometry( 5000, 5000, 1, 1 );
+        var material = new THREE.MeshLambertMaterial({ color:color});
+        mesh = new THREE.Mesh( geometry,material );
+        mesh.rotation.x =  -Math.PI / 2;
+        mesh.position.set(x,-0.01,z);
+        scene.add(mesh);
+        return mesh;
+    }
+
+
+
+    function onWindowResize() {
+        width = document.body.clientWidth;
+        height = document.body.clientHeight;
+        camera.left = width / - 2;
+        camera.right = width /  2;
+        camera.top = height / 2;
+		camera.bottom = height /  -2;
+		
+		// 更新相机投影矩阵，在相机任何参数被改变以后必须被调用
+        camera.updateProjectionMatrix();
+        renderer.setSize( width,height );
+    }
+
+    function animate() {
+        requestAnimationFrame( animate );
+        stats.update();
+        // controls.update();
+        renderer.render( scene, camera );
+    }
+
+</script>
+</body>
+</html>

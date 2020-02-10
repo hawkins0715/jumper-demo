@@ -1,15 +1,16 @@
 function creatcylinder(x, z) {
 
-    var color_list = [0xFF00FF,0x800000,0x808000,0x008000,0x800080,0x008080,0x000080,0x00FFFF,0xFFFF00,0x00FF00];
+    // var color_list = [0xFF00FF,0x800000,0x808000,0x008000,0x800080,0x008080,0x000080,0x00FFFF,0xFFFF00,0x00FF00];
 
     color1 = color_list[Math.floor(Math.random()*color_list.length)];
+
 
     var color_list_str = ["#FF00FF","#800000","#808000","#008000","#800080","#008080","#000080","#00FFFF","#FFFF00","#00FF00"];
 
     color1_str = color_list_str[Math.floor(Math.random()*color_list_str.length)];
     color2_str = color_list_str[Math.floor(Math.random()*color_list_str.length)];
 
-    group = creatcylinder_canvas(x, z, color1_str, color2_str, color1, color1);
+    group = creatcylinder_canvas(x, z, color1_str,color2_str, color1, color1);
     return group;
 }
 
